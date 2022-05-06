@@ -22,6 +22,11 @@ export 'package:flutter_html/src/navigation_delegate.dart';
 //export style api
 export 'package:flutter_html/style.dart';
 
+class ImgRenderComplete {
+  static Function? fn;
+  static int count = 0;
+}
+
 class Html extends StatelessWidget {
   /// The `Html` widget takes HTML as input and displays a RichText
   /// tree of the parsed HTML content.
@@ -64,6 +69,7 @@ class Html extends StatelessWidget {
     this.tagsList = const [],
     this.style = const {},
     this.navigationDelegateForIframe,
+    required this.imgRenderComplete,
   })  : document = null,
         assert(data != null),
         _anchorKey = anchorKey ?? GlobalKey(),
@@ -85,6 +91,7 @@ class Html extends StatelessWidget {
     this.tagsList = const [],
     this.style = const {},
     this.navigationDelegateForIframe,
+    required this.imgRenderComplete,
   })  : data = null,
         assert(document != null),
         _anchorKey = anchorKey ?? GlobalKey(),
@@ -92,6 +99,7 @@ class Html extends StatelessWidget {
 
   /// A unique key for this Html widget to ensure uniqueness of anchors
   final GlobalKey _anchorKey;
+  final Function imgRenderComplete;
 
   /// The HTML data passed to the widget as a String
   final String? data;
@@ -151,10 +159,10 @@ class Html extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dom.Document doc =
-        data != null ? HtmlParser.parseHTML(data!) : document!;
+    final dom.Document doc = data != null ? HtmlParser.parseHTML(data!) : document!;
     final double? width = shrinkWrap ? null : MediaQuery.of(context).size.width;
-
+    ImgRenderComplete.fn = imgRenderComplete;
+    ImgRenderComplete.count = 0;
     return Container(
       width: width,
       child: HtmlParser(
@@ -224,7 +232,7 @@ class SelectableHtml extends StatelessWidget {
     this.tagsList = const [],
     this.selectionControls,
     this.scrollPhysics,
-  }) : document = null,
+  })  : document = null,
         assert(data != null),
         _anchorKey = anchorKey ?? GlobalKey(),
         super(key: key);
@@ -241,7 +249,7 @@ class SelectableHtml extends StatelessWidget {
     this.tagsList = const [],
     this.selectionControls,
     this.scrollPhysics,
-  }) : data = null,
+  })  : data = null,
         assert(document != null),
         _anchorKey = anchorKey ?? GlobalKey(),
         super(key: key);
