@@ -106,7 +106,7 @@ ImageRender networkImageRender({
   double? width,
   double? height,
   Widget Function(String?)? altWidget,
-  Widget Function()? loadingWidget,
+  Widget Function(Map)? widget,
 }) =>
     (context, attributes, element) {
       final src = mapUrl?.call(_src(attributes)) ?? _src(attributes)!;
@@ -146,30 +146,36 @@ ImageRender networkImageRender({
       // }
       // print(context.parser.cachedImageSizes[src]);
 
-      double? __width = 343;
+      // double? __width = 343;
       double? __height =
           ((_height(attributes) ?? 0.0) / (_width(attributes) ?? 0.0)) *
-              __width;
-      if (_width(attributes) == null) {
-        __width = width ?? _width(attributes);
+              (width ?? 0.0);
+      if (_height(attributes) == null) {
         __height = height ?? _height(attributes);
       }
       // ImgRenderComplete.count++;
       // Future.delayed(Duration(milliseconds: 300), () {
       //   ImgRenderComplete.fn?.call(ImgRenderComplete.count);
       // });
-      return Container(
-        // child: loadingWidget?.call(),
-        child: src == null
-            ? loadingWidget?.call()
-            : Image.network(
-                src,
-                width: __width,
-                height: __height,
-              ),
-        width: __width,
-        height: __height,
-      );
+      return widget?.call({'width': width, 'height': __height, 'url': src});
+      // return XImage(
+      //   image: src,
+      //   width: __width,
+      //   height: __height,
+      // );
+      // return Container(
+      //   // child: loadingWidget?.call(),
+      //   child: src == null
+      //       ? Container(color: HexToColor('#C1C6CB'))
+      //       : Image.network(
+      //           src,
+      //           width: __width,
+      //           height: __height,
+      //           fit: BoxFit.cover,
+      //         ),
+      //   width: __width,
+      //   height: __height,
+      // );
       // return FutureBuilder<Size>(
       //   future: completer.future,
       //   initialData: context.parser.cachedImageSizes[src],
