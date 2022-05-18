@@ -272,8 +272,7 @@ class _MyHomePageState extends State<MyHomePage> {
             "table": (context, child) {
               return SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child:
-                    (context.tree as TableLayoutElement).toWidget(context),
+                child: (context.tree as TableLayoutElement).toWidget(context),
               );
             },
             "bird": (RenderContext context, Widget child) {
@@ -294,11 +293,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 (context, attributes, element) {
               return FlutterLogo(size: 36);
             },
-            networkSourceMatcher(domains: ["mydomain.com"]):
-                networkImageRender(
+            networkSourceMatcher(domains: ["mydomain.com"]): networkImageRender(
               headers: {"Custom-Header": "some-value"},
               altWidget: (alt) => Text(alt ?? ""),
-              loadingWidget: () => Text("Loading..."),
+              widget: (Map res) => Text("Loading..."),
             ),
             // On relative paths starting with /wiki, prefix with a base url
             (attr, _) =>
@@ -325,6 +323,7 @@ class _MyHomePageState extends State<MyHomePage> {
               print(element);
             });
           },
+          imgRenderComplete: (e) {},
         ),
       ),
     );
