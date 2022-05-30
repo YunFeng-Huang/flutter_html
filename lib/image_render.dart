@@ -157,7 +157,11 @@ ImageRender networkImageRender({
       // Future.delayed(Duration(milliseconds: 300), () {
       //   ImgRenderComplete.fn?.call(ImgRenderComplete.count);
       // });
-      return widget?.call({'width': width, 'height': __height, 'url': src});
+      return widget?.call({
+        'width': (width ?? 0.0) * 2,
+        'height': (__height ?? 0) * 2,
+        'url': src
+      });
       // return XImage(
       //   image: src,
       //   width: __width,

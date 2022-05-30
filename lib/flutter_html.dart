@@ -69,7 +69,6 @@ class Html extends StatelessWidget {
     this.tagsList = const [],
     this.style = const {},
     this.navigationDelegateForIframe,
-    required this.imgRenderComplete,
   })  : document = null,
         assert(data != null),
         _anchorKey = anchorKey ?? GlobalKey(),
@@ -91,7 +90,6 @@ class Html extends StatelessWidget {
     this.tagsList = const [],
     this.style = const {},
     this.navigationDelegateForIframe,
-    required this.imgRenderComplete,
   })  : data = null,
         assert(document != null),
         _anchorKey = anchorKey ?? GlobalKey(),
@@ -99,7 +97,6 @@ class Html extends StatelessWidget {
 
   /// A unique key for this Html widget to ensure uniqueness of anchors
   final GlobalKey _anchorKey;
-  final Function imgRenderComplete;
 
   /// The HTML data passed to the widget as a String
   final String? data;
@@ -161,8 +158,6 @@ class Html extends StatelessWidget {
   Widget build(BuildContext context) {
     final dom.Document doc = data != null ? HtmlParser.parseHTML(data!) : document!;
     final double? width = shrinkWrap ? null : MediaQuery.of(context).size.width;
-    ImgRenderComplete.fn = imgRenderComplete;
-    ImgRenderComplete.count = 0;
     return Container(
       width: width,
       child: HtmlParser(
